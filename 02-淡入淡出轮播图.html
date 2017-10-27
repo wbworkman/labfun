@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        ul,ol{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        ul {
+            position: relative;
+        }
+        #box {
+            width: 771px;
+            height: 245px;
+            margin:50px auto;
+            position: relative;
+        }
+        ul li {
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+        ol#nav {
+            position: absolute;
+            left: 30px;
+            bottom: 10px;
+        }
+        ol#nav li {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: orange;
+            margin-right: 10px;
+            float: left;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            cursor: pointer;
+        }
+        ol#nav li.active {
+            background-color: red;
+        }
+    </style>
+    <script src="jquery-1.12.4.min.js"></script>
+    <script>
+        $(function (){
+            //分析思路 让当前的需要出现的li 淡入 让别人淡出
+            //获取所有的li 给所有的li添加鼠标移上事件
+            $("#box ol li").mouseover(function (){
+               var idx = $(this).index();
+                $(this).addClass("active").siblings().removeClass("active");
+                $("#box ul li").eq(idx).fadeIn().siblings().fadeOut();
+            })
+            var timer = null;
+            var num = 0;
+            function autoPlay(){
+                num++;
+                if(num>$("#nav li").length-1){
+                    num = 0;
+                }
+                $("#nav li").eq(num).addClass("active").siblings().removeClass("active");
+                $("#box ul li").eq(num).fadeIn().siblings().fadeOut();
+            }
+            timer = setInterval(autoPlay,1500);
+            //移动到真个box上面 就立马清除定时器
+            $("box").mouseover(function (){
+                clearInterval(timer);
+            })
+            $("box").mouseout(function (){
+                timer = setInterval(autoPlay,1500);
+            })
+        })
+    </script>
+</head>
+<body>
+<!--在本页面要进行一次跳转 JavaScript:;阻止当前你跳转-->
+<div id="box">
+    <ul>
+        <li style="display: block;"><a href="javaScript:;"><img src="img/1.jpg" alt=""/></a></li>
+        <li><a href="javaScript:;"><img src="img/2.jpg" alt=""/></a></li>
+        <li><a href="javaScript:;"><img src="img/3.jpg" alt=""/></a></li>
+        <li><a href="javaScript:;"><img src="img/4.jpg" alt=""/></a></li>
+    </ul>
+    <ol id="nav">
+        <li class="active">1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+    </ol>
+</div>
+
+</body>
+</html>
